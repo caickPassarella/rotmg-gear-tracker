@@ -17,17 +17,17 @@ async function getTopClasses(classType) {
   });
 
   const $ = cheerio.load(html);
-  const gearList = {
-    characters: [],
-  };
+
+  const gearList = {};
+  let totalCharacters = 0;
 
   $(".table-responsive table tbody tr").each((i, el) => {
     const tds = $(el).find("td");
 
-    // if account is private, skip
+    // Skip private accounts
     if ($(tds[2]).text() === "Private") return;
 
-    const character = [];
+    const items = [];
     $(tds)
       .find("span.item")
       .each((j, item) => {
@@ -35,19 +35,27 @@ async function getTopClasses(classType) {
         if (title && title !== "Empty slot") {
           const parts = title.split("\n");
           const itemName = parts[0];
-          const enchantments = parts.slice(1);
-          character.push({
-            name: itemName,
-            enchantments,
-          });
+          //const enchantments = parts.slice(1);
+          items.push(itemName);
+
+          gearList[itemName] = (gearList[itemName] || 0) + 1;
         }
       });
-    if (character.length !== 0) {
-      gearList.characters.push(character);
+    if (items.length > 0) {
+      totalCharacters++;
     }
   });
 
-  return gearList;
+  const gearUsage = Object.entries(gearList).map(([name, count]) => ({
+    name,
+    count,
+    percentage: ((count / totalCharacters) * 100).toFixed(0),
+  }));
+
+  return {
+    totalCharacters,
+    gearUsage: gearUsage.sort((a, b) => b.count - a.count),
+  };
 }
 
 app.get("/top/:classType", async (req, res) => {
