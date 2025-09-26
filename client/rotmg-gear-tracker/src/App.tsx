@@ -20,13 +20,13 @@ import { GearCardList } from "./components/ui/gearCardList";
 import { classImages } from "./assets";
 
 function App() {
-  const [classIsSelected, setClassIsSelected] = useState(false);
+  const [currentClass, setCurrentClass] = useState("");
   const [allItems, setAllItems] = useState<Item[]>([]);
   const [totalCharacters, setTotalCharacters] = useState(0);
 
   const handleButtonClick = async (className: ClassName) => {
     const gearData = await fetchRotmgGear(className);
-    setClassIsSelected(true);
+    setCurrentClass(className);
     setAllItems(gearData.gearUsage);
     setTotalCharacters(gearData.totalCharacters);
     console.log(gearData);
@@ -56,19 +56,35 @@ function App() {
           ))}
         </SimpleGrid>
       </Container>
-      <SimpleGrid minChildWidth="md" gap="4">
-        {classIsSelected &&
-          allItems.map((item, index) => (
-            <GearCardList
-              key={index}
-              name={item.name}
-              count={item.count}
-              src={item.src}
-              img={item.img}
-              percentage={item.percentage}
-            />
-          ))}
-      </SimpleGrid>
+      <Box>
+        {currentClass && (
+          <Box paddingBottom="2">
+            <Heading fontWeight="bold" size="3xl" textAlign="left">
+              {currentClass}
+            </Heading>
+            <Text textAlign="left" fontSize="md" fontWeight="light">
+              <Text as="span" fontWeight="bold">
+                {totalCharacters}
+              </Text>{" "}
+              characters found
+            </Text>
+          </Box>
+        )}
+
+        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap="4">
+          {currentClass &&
+            allItems.map((item, index) => (
+              <GearCardList
+                key={index}
+                name={item.name}
+                count={item.count}
+                src={item.src}
+                img={item.img}
+                percentage={item.percentage}
+              />
+            ))}
+        </SimpleGrid>
+      </Box>
     </Flex>
   );
 }

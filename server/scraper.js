@@ -40,12 +40,29 @@ async function getTopClasses(classType) {
           const imgPos = imgStyle.split(":")[1];
           const itemName = parts[0];
           //const enchantments = parts.slice(1);
-          items.push(itemName);
+          const rarityMatch = itemName.match(
+            /^(Uncommon|Rare|Legendary|Divine)\s+(.*)$/
+          );
 
-          if (!gearList[itemName]) {
-            gearList[itemName] = { count: 0, src: itemSrc, img: imgPos };
+          let rarity = "Common";
+          let baseName = itemName;
+          if (rarityMatch) {
+            rarity = rarityMatch[1];
+            baseName = rarityMatch[2];
           }
-          gearList[itemName].count++;
+          items.push(baseName);
+
+          if (!gearList[baseName]) {
+            gearList[baseName] = {
+              count: 0,
+              rarities: {},
+              src: itemSrc,
+              img: imgPos,
+            };
+          }
+          gearList[baseName].count++;
+          gearList[baseName].rarities[rarity] =
+            (gearList[baseName].rarities[rarity] || 0) + 1;
         }
       });
     if (items.length > 0) {
@@ -54,9 +71,10 @@ async function getTopClasses(classType) {
   });
 
   const gearUsage = Object.entries(gearList).map(
-    ([name, { count, src, img }]) => ({
+    ([name, { count, rarities, src, img }]) => ({
       name,
       count,
+      rarities,
       src,
       img,
       percentage: ((count / totalCharacters) * 100).toFixed(0),
