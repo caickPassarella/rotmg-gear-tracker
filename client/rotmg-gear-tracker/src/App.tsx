@@ -1,7 +1,8 @@
 import { useState } from "react";
 import "./App.css";
 import { fetchRotmgGear } from "./utils";
-import type { classNameType, Item } from "./types";
+import { allClasses } from "./types";
+import type { ClassName, Item } from "./types";
 
 // Chakra UI components
 import {
@@ -16,14 +17,14 @@ import {
 } from "@chakra-ui/react";
 import { GearCardList } from "./components/ui/gearCardList";
 
-import { necromancer } from "./assets";
+import { classImages } from "./assets";
 
 function App() {
   const [classIsSelected, setClassIsSelected] = useState(false);
   const [allItems, setAllItems] = useState<Item[]>([]);
   const [totalCharacters, setTotalCharacters] = useState(0);
 
-  const handleButtonClick = async (className: classNameType) => {
+  const handleButtonClick = async (className: ClassName) => {
     const gearData = await fetchRotmgGear(className);
     setClassIsSelected(true);
     setAllItems(gearData.gearUsage);
@@ -31,7 +32,7 @@ function App() {
     console.log(gearData);
   };
   return (
-    <Flex gap="16" direction="column">
+    <Flex gap="16" direction="column" justifyContent="center">
       <Box>
         <Heading fontWeight="bold" size="3xl" colorPalette="white">
           ROTMG GEAR TRACKER
@@ -42,62 +43,31 @@ function App() {
       </Box>
       <Container>
         <SimpleGrid minChildWidth="48px" gap="16">
-          <GridItem>
-            <Image
-              onClick={() => handleButtonClick("necromancers")}
-              cursor="pointer"
-              height="48px"
-              src={necromancer}
-            />
-          </GridItem>
-          <GridItem>
-            <Image cursor="pointer" height="48px" src={necromancer} />
-          </GridItem>
-          <GridItem>
-            <Image height="48px" src={necromancer} />
-          </GridItem>
-          <GridItem>
-            <Image height="48px" src={necromancer} />
-          </GridItem>
-          <GridItem>
-            <Image height="48px" src={necromancer} />
-          </GridItem>
-          <GridItem>
-            <Image height="48px" src={necromancer} />
-          </GridItem>
-          <GridItem>
-            <Image height="48px" src={necromancer} />
-          </GridItem>
-          <GridItem>
-            <Image height="48px" src={necromancer} />
-          </GridItem>
-          <GridItem>
-            <Image height="48px" src={necromancer} />
-          </GridItem>
-          <GridItem>
-            <Image height="48px" src={necromancer} />
-          </GridItem>
-          <GridItem>
-            <Image height="48px" src={necromancer} />
-          </GridItem>
-          <GridItem>
-            <Image height="48px" src={necromancer} />
-          </GridItem>
+          {allClasses.map((className) => (
+            <GridItem key={className}>
+              <Image
+                onClick={() => handleButtonClick(className)}
+                cursor="pointer"
+                height="48px"
+                src={classImages[className]}
+                alt={className}
+              />
+            </GridItem>
+          ))}
         </SimpleGrid>
       </Container>
-      <SimpleGrid minChildWidth="250px" gap="4">
+      <SimpleGrid minChildWidth="md" gap="4">
         {classIsSelected &&
           allItems.map((item, index) => (
             <GearCardList
               key={index}
-              item={item.name}
+              name={item.name}
               count={item.count}
+              src={item.src}
+              img={item.img}
               percentage={item.percentage}
             />
           ))}
-        {/* {classIsSelected && (
-          <GearCardList item="test" count={2} percentage="32%" />
-        )} */}
       </SimpleGrid>
     </Flex>
   );

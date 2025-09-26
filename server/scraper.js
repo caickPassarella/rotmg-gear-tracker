@@ -21,24 +21,31 @@ async function getTopClasses(classType) {
   const gearList = {};
   let totalCharacters = 0;
 
-  $(".table-responsive table tbody tr").each((i, el) => {
+  const accounts = $(".table-responsive table tbody tr");
+  accounts.each((i, el) => {
     const tds = $(el).find("td");
 
     // Skip private accounts
     if ($(tds[2]).text() === "Private") return;
-
     const items = [];
     $(tds)
       .find("span.item")
       .each((j, item) => {
         const title = $(item).attr("title");
+        const itemSrc =
+          "https://www.realmeye.com" + $(item).parent().attr("href");
+        const imgStyle = $(item).attr("style");
         if (title && title !== "Empty slot") {
           const parts = title.split("\n");
+          const imgPos = imgStyle.split(":")[1];
           const itemName = parts[0];
           //const enchantments = parts.slice(1);
           items.push(itemName);
 
-          gearList[itemName] = (gearList[itemName] || 0) + 1;
+          if (!gearList[itemName]) {
+            gearList[itemName] = { count: 0, src: itemSrc, img: imgPos };
+          }
+          gearList[itemName].count++;
         }
       });
     if (items.length > 0) {
@@ -46,11 +53,15 @@ async function getTopClasses(classType) {
     }
   });
 
-  const gearUsage = Object.entries(gearList).map(([name, count]) => ({
-    name,
-    count,
-    percentage: ((count / totalCharacters) * 100).toFixed(0),
-  }));
+  const gearUsage = Object.entries(gearList).map(
+    ([name, { count, src, img }]) => ({
+      name,
+      count,
+      src,
+      img,
+      percentage: ((count / totalCharacters) * 100).toFixed(0),
+    })
+  );
 
   return {
     totalCharacters,
