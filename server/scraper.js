@@ -19,7 +19,9 @@ async function getTopClasses(classType) {
   const $ = cheerio.load(html);
 
   const gearList = {};
+  const slotTypes = ["Weapon", "Ability", "Armor", "Ring"];
   let totalCharacters = 0;
+  const excludeList = ["Empty Slot", "Backpack", "Backpack Extender"];
 
   const accounts = $(".table-responsive table tbody tr");
   accounts.each((i, el) => {
@@ -32,13 +34,15 @@ async function getTopClasses(classType) {
       .find("span.item")
       .each((j, item) => {
         const title = $(item).attr("title");
-        const itemSrc =
-          "https://www.realmeye.com" + $(item).parent().attr("href");
         const imgStyle = $(item).attr("style");
-        if (title && title !== "Empty slot") {
+
+        if (imgStyle && !excludeList.includes(title)) {
+          const itemSrc =
+            "https://www.realmeye.com" + $(item).parent().attr("href");
           const parts = title.split("\n");
           const imgPos = imgStyle.split(":")[1];
           const itemName = parts[0];
+          const slotType = slotTypes[j % 4];
           //const enchantments = parts.slice(1);
           const rarityMatch = itemName.match(
             /^(Uncommon|Rare|Legendary|Divine)\s+(.*)$/
@@ -56,6 +60,7 @@ async function getTopClasses(classType) {
             gearList[baseName] = {
               count: 0,
               rarities: {},
+              type: slotType,
               src: itemSrc,
               img: imgPos,
             };
@@ -71,10 +76,11 @@ async function getTopClasses(classType) {
   });
 
   const gearUsage = Object.entries(gearList).map(
-    ([name, { count, rarities, src, img }]) => ({
+    ([name, { count, rarities, type, src, img }]) => ({
       name,
       count,
       rarities,
+      type,
       src,
       img,
       percentage: ((count / totalCharacters) * 100).toFixed(0),

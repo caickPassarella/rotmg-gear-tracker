@@ -1,3 +1,5 @@
+import type { PropsWithChildren } from "react";
+
 export const allClasses = [
   "wizards",
   "mystics",
@@ -24,7 +26,10 @@ export type ClassName = (typeof allClasses)[number];
 export type Item = {
   name: string;
   count: number;
+  type: string;
   src: string;
   img: string;
   percentage: string;
 };
+
+export type PopOverProp = PropsWithChildren;

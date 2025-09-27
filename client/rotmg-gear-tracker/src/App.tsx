@@ -24,6 +24,8 @@ function App() {
   const [allItems, setAllItems] = useState<Item[]>([]);
   const [totalCharacters, setTotalCharacters] = useState(0);
 
+  const gearTypes = ["Weapon", "Armor", "Ability", "Ring"];
+
   const handleButtonClick = async (className: ClassName) => {
     const gearData = await fetchRotmgGear(className);
     setCurrentClass(className);
@@ -46,18 +48,23 @@ function App() {
           {allClasses.map((className) => (
             <GridItem key={className}>
               <Image
+                _hover={{
+                  transform: "scale(1.04)",
+                  filter: "drop-shadow(0 0 0.50rem rgba(219, 219, 219, 0.247))",
+                }}
                 onClick={() => handleButtonClick(className)}
                 cursor="pointer"
                 height="48px"
                 src={classImages[className]}
                 alt={className}
+                imageRendering="pixelated"
               />
             </GridItem>
           ))}
         </SimpleGrid>
       </Container>
-      <Box>
-        {currentClass && (
+      {currentClass && (
+        <Box>
           <Box paddingBottom="2">
             <Heading fontWeight="bold" size="3xl" textAlign="left">
               {currentClass}
@@ -69,22 +76,31 @@ function App() {
               characters found
             </Text>
           </Box>
-        )}
-
-        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap="4">
-          {currentClass &&
-            allItems.map((item, index) => (
-              <GearCardList
-                key={index}
-                name={item.name}
-                count={item.count}
-                src={item.src}
-                img={item.img}
-                percentage={item.percentage}
-              />
+          <SimpleGrid columns={{ base: 1, md: 2, lg: 3, xl: 4 }}>
+            {gearTypes.map((type) => (
+              <Box key={type}>
+                <Heading fontWeight="bold" size="md" mb={4}>
+                  {type}
+                </Heading>
+                {allItems
+                  .filter((item) => item.type === type)
+                  .map((item, index) => (
+                    <Box key={index} margin={4}>
+                      <GearCardList
+                        name={item.name}
+                        count={item.count}
+                        type={item.type}
+                        src={item.src}
+                        img={item.img}
+                        percentage={item.percentage}
+                      />
+                    </Box>
+                  ))}
+              </Box>
             ))}
-        </SimpleGrid>
-      </Box>
+          </SimpleGrid>
+        </Box>
+      )}
     </Flex>
   );
 }
