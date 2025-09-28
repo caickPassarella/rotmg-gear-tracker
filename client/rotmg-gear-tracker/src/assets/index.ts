@@ -17,6 +17,7 @@ import warriors from "./classes/warrior.png";
 import wizards from "./classes/wizard.png";
 import rogues from "./classes/rogue.png";
 import allRotmgItems from "./allRotmgItems.png";
+import gitHub from "./github.png";
 
 import type { ClassName } from "../types";
 
@@ -40,4 +41,5 @@ export const classImages: Record<ClassName, string> = {
   wizards,
   rogues,
   allRotmgItems,
+  gitHub,
 };

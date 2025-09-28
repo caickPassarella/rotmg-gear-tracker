@@ -14,6 +14,9 @@ import {
   SimpleGrid,
   GridItem,
   Image,
+  Spinner,
+  Link,
+  Stack,
 } from "@chakra-ui/react";
 import { GearCardList } from "./components/ui/gearCardList";
 
@@ -23,26 +26,61 @@ function App() {
   const [currentClass, setCurrentClass] = useState("");
   const [allItems, setAllItems] = useState<Item[]>([]);
   const [totalCharacters, setTotalCharacters] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const gearTypes = ["Weapon", "Armor", "Ability", "Ring"];
 
   const handleButtonClick = async (className: ClassName) => {
+    setLoading(true);
     const gearData = await fetchRotmgGear(className);
     setCurrentClass(className);
     setAllItems(gearData.gearUsage);
     setTotalCharacters(gearData.totalCharacters);
     console.log(gearData);
+    setLoading(false);
   };
   return (
     <Flex gap="16" direction="column" justifyContent="center">
-      <Box>
-        <Heading fontWeight="bold" size="3xl" colorPalette="white">
+      <Flex justifyContent="space-between">
+        <Stack direction="row">
+          <Link
+            paddingRight={3}
+            _hover={{
+              textDecoration: "underline",
+              color: "#ffffff",
+              boxShadow: "md",
+            }}
+          >
+            Home
+          </Link>
+          <Link
+            _hover={{
+              textDecoration: "underline",
+              color: "#ffffff",
+              boxShadow: "md",
+            }}
+          >
+            Contact
+          </Link>
+        </Stack>
+        <Heading fontWeight="bold" size="lg" colorPalette="white">
           ROTMG GEAR TRACKER
         </Heading>
-        <Text fontSize="md" fontWeight="light">
-          Find the most used gear for each class
-        </Text>
-      </Box>
+        <Link
+          rel="noopener noreferrer"
+          target="_blank"
+          href="https://github.com/caickPassarella/rotmg-gear-tracker"
+        >
+          <Image
+            _hover={{
+              transform: "scale(1.08)",
+            }}
+            height="24px"
+            alt="GitHub"
+            src={classImages["gitHub"]}
+          />
+        </Link>
+      </Flex>
       <Container>
         <SimpleGrid minChildWidth="48px" gap="16">
           {allClasses.map((className) => (
@@ -63,9 +101,10 @@ function App() {
           ))}
         </SimpleGrid>
       </Container>
+      {loading ? <Spinner margin={4} size="lg" /> : <></>}
       {currentClass && (
         <Box>
-          <Box paddingBottom="2">
+          <Box>
             <Heading fontWeight="bold" size="3xl" textAlign="left">
               {currentClass}
             </Heading>
@@ -85,7 +124,7 @@ function App() {
                 {allItems
                   .filter((item) => item.type === type)
                   .map((item, index) => (
-                    <Box key={index} margin={4}>
+                    <Box key={index} marginY={4} marginRight={6}>
                       <GearCardList
                         name={item.name}
                         count={item.count}
