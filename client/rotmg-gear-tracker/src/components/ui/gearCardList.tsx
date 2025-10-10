@@ -9,11 +9,17 @@ import {
   Popover,
 } from "@chakra-ui/react";
 import type { Item } from "@/types";
-import allItems from "../../assets/AllRotmgItems.png";
 
 import { PopOver } from "./popOver";
 
-export const GearCardList = ({ name, count, src, img, percentage }: Item) => {
+export const GearCardList = ({
+  name,
+  count,
+  src,
+  img,
+  percentage,
+  rarities,
+}: Item) => {
   return (
     <Card.Root
       backgroundColor="#161616"
@@ -28,10 +34,12 @@ export const GearCardList = ({ name, count, src, img, percentage }: Item) => {
       variant="subtle"
     >
       <LinkBox>
-        <PopOver>
+        <PopOver rarities={rarities}>
           <Flex flexDirection="row" alignItems="center">
             <Box
-              backgroundImage={`url(${allItems})`}
+              backgroundImage={
+                "url(https://www.realmeye.com/s/h7/css/renders.png)"
+              }
               backgroundPosition={img}
               width="46px"
               height="46px"

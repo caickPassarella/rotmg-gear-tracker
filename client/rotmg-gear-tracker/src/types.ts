@@ -1,4 +1,4 @@
-import type { PropsWithChildren } from "react";
+import type { ReactNode } from "react";
 
 export const allClasses = [
   "wizards",
@@ -30,6 +30,16 @@ export type Item = {
   src: string;
   img: string;
   percentage: string;
+  rarities: Rarities;
 };
 
-export type PopOverProp = PropsWithChildren;
+type Rarities = {
+  Common: number;
+  Divine: number;
+  Legendary: number;
+  Rare: number;
+};
+export type PopOverProp = {
+  children: ReactNode;
+  rarities: Rarities;
+};

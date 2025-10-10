@@ -19,6 +19,11 @@ import rogues from "./classes/rogue.png";
 import allRotmgItems from "./allRotmgItems.png";
 import gitHub from "./github.png";
 
+import Divine from "./divine.png";
+import Legendary from "./legendary.png";
+import Rare from "./rare.png";
+import Uncommon from "./uncommon.png";
+
 import type { ClassName } from "../types";
 
 export const classImages: Record<ClassName, string> = {
@@ -42,4 +47,11 @@ export const classImages: Record<ClassName, string> = {
   rogues,
   allRotmgItems,
   gitHub,
+};
+
+export const raritiesImgs: Record<string, string> = {
+  Divine,
+  Legendary,
+  Rare,
+  Uncommon,
 };
