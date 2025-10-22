@@ -1,13 +1,4 @@
-import {
-  Card,
-  Text,
-  Flex,
-  Spacer,
-  Box,
-  LinkBox,
-  LinkOverlay,
-  Popover,
-} from "@chakra-ui/react";
+import { Card, Text, Flex, Spacer, Box, LinkBox } from "@chakra-ui/react";
 import type { Item } from "@/types";
 
 import { PopOver } from "./popOver";
@@ -19,6 +10,7 @@ export const GearCardList = ({
   img,
   percentage,
   rarities,
+  enchantments,
 }: Item) => {
   return (
     <Card.Root
@@ -34,7 +26,12 @@ export const GearCardList = ({
       variant="subtle"
     >
       <LinkBox>
-        <PopOver rarities={rarities}>
+        <PopOver
+          src={src}
+          name={name}
+          rarities={rarities}
+          enchantments={enchantments}
+        >
           <Flex flexDirection="row" alignItems="center">
             <Box
               backgroundImage={

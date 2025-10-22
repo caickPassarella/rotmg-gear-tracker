@@ -23,8 +23,10 @@ import Divine from "./divine.png";
 import Legendary from "./legendary.png";
 import Rare from "./rare.png";
 import Uncommon from "./uncommon.png";
+import Common from "./block.svg";
 
 import type { ClassName } from "../types";
+import type { IconType } from "react-icons";
 
 export const classImages: Record<ClassName, string> = {
   necromancers,
@@ -54,4 +56,5 @@ export const raritiesImgs: Record<string, string> = {
   Legendary,
   Rare,
   Uncommon,
+  Common,
 };

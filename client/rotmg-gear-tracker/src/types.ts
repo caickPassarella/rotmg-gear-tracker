@@ -31,6 +31,7 @@ export type Item = {
   img: string;
   percentage: string;
   rarities: Rarities;
+  enchantments: Enchantments;
 };
 
 type Rarities = {
@@ -39,7 +40,13 @@ type Rarities = {
   Legendary: number;
   Rare: number;
 };
+
+export type Enchantments = [string, number][];
+
 export type PopOverProp = {
   children: ReactNode;
+  src: string;
+  name: string;
   rarities: Rarities;
+  enchantments: Enchantments;
 };

@@ -133,6 +133,7 @@ function App() {
                         img={item.img}
                         percentage={item.percentage}
                         rarities={item.rarities}
+                        enchantments={item.enchantments}
                       />
                     </Box>
                   ))}

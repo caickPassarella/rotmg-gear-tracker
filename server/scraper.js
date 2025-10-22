@@ -43,7 +43,7 @@ async function getTopClasses(classType) {
           const imgPos = imgStyle.split(":")[1];
           const itemName = parts[0];
           const slotType = slotTypes[j % 4];
-          //const enchantments = parts.slice(1);
+          const allEnchantments = parts.slice(1);
           const rarityMatch = itemName.match(
             /^(Uncommon|Rare|Legendary|Divine)\s+(.*)$/
           );
@@ -61,6 +61,7 @@ async function getTopClasses(classType) {
               count: 0,
               rarities: {},
               type: slotType,
+              enchantments: {},
               src: itemSrc,
               img: imgPos,
             };
@@ -68,6 +69,10 @@ async function getTopClasses(classType) {
           gearList[baseName].count++;
           gearList[baseName].rarities[rarity] =
             (gearList[baseName].rarities[rarity] || 0) + 1;
+          allEnchantments.map((enchant) => {
+            gearList[baseName].enchantments[enchant] =
+              (gearList[baseName].enchantments[enchant] || 0) + 1;
+          });
         }
       });
     if (items.length > 0) {
@@ -76,15 +81,22 @@ async function getTopClasses(classType) {
   });
 
   const gearUsage = Object.entries(gearList).map(
-    ([name, { count, rarities, type, src, img }]) => ({
-      name,
-      count,
-      rarities,
-      type,
-      src,
-      img,
-      percentage: ((count / totalCharacters) * 100).toFixed(0),
-    })
+    ([name, { count, rarities, type, enchantments, src, img }]) => {
+      const sortedEnchantments = Object.entries(enchantments)
+        .filter(([, count]) => count > 1)
+        .sort(([, a], [, b]) => b - a);
+
+      return {
+        name,
+        count,
+        rarities,
+        type,
+        enchantments: sortedEnchantments,
+        src,
+        img,
+        percentage: ((count / totalCharacters) * 100).toFixed(0),
+      };
+    }
   );
 
   return {
