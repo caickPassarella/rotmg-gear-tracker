@@ -20,7 +20,6 @@ async function getTopClasses(classType) {
   await Promise.all(
     pages.map(async (page) => {
       const url = `https://www.realmeye.com/top-${classType}/${page}`;
-      console.log(url);
       const { data: html } = await axios.get(url, {
         headers: {
           "User-Agent":
@@ -96,7 +95,6 @@ async function getTopClasses(classType) {
       const sortedRarities = Object.entries(rarities).sort(
         (a, b) => b[1] - a[1]
       );
-      console.log(sortedRarities);
 
       return {
         name,
