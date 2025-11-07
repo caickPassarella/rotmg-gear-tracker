@@ -34,12 +34,10 @@ export type Item = {
   enchantments: Enchantments;
 };
 
-type Rarities = {
-  Common: number;
-  Divine: number;
-  Legendary: number;
-  Rare: number;
-};
+type Rarities = [
+  "Uncommon" | "Common" | "Rare" | "Legendary" | "Divine",
+  number
+][];
 
 export type Enchantments = [string, number][];
 

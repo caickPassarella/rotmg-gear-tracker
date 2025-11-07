@@ -63,9 +63,12 @@ function App() {
             Contact
           </Link>
         </Stack>
-        <Heading fontWeight="bold" size="lg" colorPalette="white">
-          ROTMG GEAR TRACKER
-        </Heading>
+        <Stack gap={0} direction="column">
+          <Heading size="2xl" colorPalette="white">
+            RealmGear
+          </Heading>
+          <Text>A gear tracker and analyzer for RotMG</Text>
+        </Stack>
         <Link
           rel="noopener noreferrer"
           target="_blank"
@@ -102,16 +105,16 @@ function App() {
         </SimpleGrid>
       </Container>
       {loading ? <Spinner margin={4} size="lg" /> : <></>}
-      {currentClass && (
+      {currentClass && !loading && (
         <Box>
-          <Box>
+          <Box paddingBottom={10}>
             <Heading fontWeight="bold" size="3xl" textAlign="left">
               {currentClass}
             </Heading>
             <Text textAlign="left" fontSize="md" fontWeight="light">
               <Text as="span" fontWeight="bold">
                 {totalCharacters}
-              </Text>{" "}
+              </Text>
               characters found
             </Text>
           </Box>

@@ -35,7 +35,7 @@ export const GearCardList = ({
           <Flex flexDirection="row" alignItems="center">
             <Box
               backgroundImage={
-                "url(https://www.realmeye.com/s/h7/css/renders.png)"
+                "url(https://www.realmeye.com/s/h9/css/renders.png)"
               }
               backgroundPosition={img}
               width="46px"

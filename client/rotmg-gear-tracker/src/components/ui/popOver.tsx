@@ -48,8 +48,8 @@ export const PopOver = ({
                 <DataList.Item>
                   <Text fontSize="md">Rarity count</Text>
                   <DataList.ItemValue gap={3}>
-                    {Object.entries(rarities).map(([rarity, value]) => (
-                      <Tag.Root maxW="110px">
+                    {rarities.map(([rarity, value]) => (
+                      <Tag.Root key={rarity} maxW="110px">
                         <Tag.StartElement>
                           <Image src={raritiesImgs[rarity]} />
                         </Tag.StartElement>
