@@ -114,7 +114,7 @@ function App() {
             <Text textAlign="left" fontSize="md" fontWeight="light">
               <Text as="span" fontWeight="bold">
                 {totalCharacters}
-              </Text>
+              </Text>{" "}
               characters found
             </Text>
           </Box>
